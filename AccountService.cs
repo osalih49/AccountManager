@@ -129,6 +129,7 @@ namespace AccountManager
             Console.Clear();
             var currentBalance = accounts[currentUser].Balance;
             Console.WriteLine($"Welcome {currentUser}");
+            Console.WriteLine("-------------------------");
             Console.WriteLine($"Your Current Balance = ${currentBalance}");
             StorageService.SaveUserAccount(accounts, filePath);
 
@@ -137,6 +138,8 @@ namespace AccountManager
         public static void Deposit(Dictionary<string, UserAccount> accounts, string currentUser) 
         {
             Console.Clear();
+            Console.WriteLine($"Welcome {currentUser}");
+            Console.WriteLine("-------------------------");
             Console.WriteLine("== How much would you like to deposit? ==");
             Console.Write("Depoit: $");
             string deposit = Console.ReadLine();
@@ -149,7 +152,7 @@ namespace AccountManager
                 if(depositAmount > 0)
                 {
                     accounts[currentUser].Balance = accounts[currentUser].Balance + depositAmount;
-                    Console.WriteLine($"You deposited {depositAmount}");
+                    Console.WriteLine($"You deposited ${depositAmount}");
                     Console.WriteLine($"Your current balance: {accounts[currentUser].Balance}");
                  
                 }
@@ -159,9 +162,36 @@ namespace AccountManager
                 Console.WriteLine("Enter a valid number");
             }
 
-            
+
         }
 
+        public static void WidthDraw(Dictionary<string, UserAccount> accounts, string currentUser)
+        {
+            Console.Clear();
+            var currentBalance = accounts[currentUser].Balance;
+            Console.WriteLine($"Welcome {currentUser}");
+            Console.WriteLine("------------------------");
+            Console.WriteLine("");
+
+            Console.WriteLine($"Your current balance: {accounts[currentUser].Balance}");
+            Console.WriteLine("");
+            Console.WriteLine("How much would you like to widthdraw?: $");
+            string widthdraw = Console.ReadLine();
+
+            if(int.TryParse(widthdraw, out int widthdrawAmount))
+            {
+                accounts[currentUser].Balance = accounts[currentUser].Balance - widthdrawAmount;
+                Console.WriteLine($"You widthdrawed ${widthdrawAmount}");
+                Console.WriteLine($"Your current balance: {accounts[currentUser].Balance}");
+            }
+            else
+            {
+                Console.WriteLine("Please enter a valid number");
+             
+            }
+
+
+        }
         public static void CloseAccount(Dictionary<string, UserAccount> accounts, string filePath) 
         { 
 

@@ -69,9 +69,10 @@ namespace AccountManager
                 Console.WriteLine("");
                 Console.WriteLine("1) View Balance");
                 Console.WriteLine("2) Deposit");
-                Console.WriteLine("3) Close your Account");
-                Console.WriteLine("4) Logout");
-                Console.WriteLine("5) Exit");
+                Console.WriteLine("3) Widthdraw");
+                Console.WriteLine("4) Close your Account");
+                Console.WriteLine("5) Logout");
+                Console.WriteLine("6) Exit");
                 Console.WriteLine("");
                 Console.WriteLine("----------------------------------------");
 
@@ -108,15 +109,29 @@ namespace AccountManager
                 else if (choice == "3")
                 {
                     Console.Clear();
-                    AccountService.CloseAccount(accounts, currentUser);
+                    AccountService.WidthDraw(accounts, currentUser);
+                    Console.WriteLine("");
+                    Console.WriteLine("Press 'B' to go back");
+                    string backChoice = Console.ReadLine()?.Trim()?.ToUpper();
+
+                    if (backChoice == "B")
+                    {
+                        Console.Clear();
+                        continue;
+                    }
                 }
                 else if (choice == "4")
+                {
+                    Console.Clear();
+                    AccountService.CloseAccount(accounts, currentUser);
+                }
+                else if (choice == "5")
                 {
                     Console.Clear();
                     Console.WriteLine($"Thank you for visiting {currentUser} have an amazing day!");
                     break;
                 }
-                else if (choice == "5")
+                else if (choice == "6")
                 {
                     Console.Clear();
                     Environment.Exit(0);
