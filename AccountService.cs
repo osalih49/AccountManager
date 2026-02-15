@@ -22,7 +22,7 @@ namespace AccountManager
             string userName = Console.ReadLine();
 
             // checking if username is empty or white space
-            if(string.IsNullOrWhiteSpace(userName))
+            if (string.IsNullOrWhiteSpace(userName))
             {
                 Console.WriteLine("Username cannot be empty, try again");
                 Thread.Sleep(2000);
@@ -39,11 +39,11 @@ namespace AccountManager
 
             //now we prompt user to create a password if username created
 
-            Console.Write("Create Password: "); 
+            Console.Write("Create Password: ");
             string password = Console.ReadLine();
 
             //check if password is empty or white space
-            if(string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(password))
             {
                 Console.WriteLine("Password cannot be empty or white space try again!");
                 Thread.Sleep(2000);
@@ -67,7 +67,7 @@ namespace AccountManager
                     Thread.Sleep(2000);
                     confirmAttempts++;
                 }
-            
+
             }
 
             accounts[userName] = new UserAccount { Username = userName, Password = password, Balance = 0, IsActive = true };
@@ -108,7 +108,7 @@ namespace AccountManager
                 Console.WriteLine("Password cannot be empty");
                 Thread.Sleep(2000);
                 Console.Clear();
-                return null; 
+                return null;
             }
 
             if (accounts[userName].Password != password)
@@ -118,11 +118,24 @@ namespace AccountManager
                 Console.Clear();
                 return null;
             }
+
+            if (!accounts[userName].IsActive)
+            {
+                Console.WriteLine("This account is currently inactive.");
+                Thread.Sleep(2000);
+                Console.Clear();
+                return null;
+            }
+
             Console.WriteLine("Logged in Successfully");
+            Console.Clear();
+            Console.WriteLine("Loading...");
             Thread.Sleep(2000);
             Console.Clear();
             return accounts[userName];
-             
+
+          
+
         }
         public static void ViewBalance(Dictionary<string, UserAccount> accounts, string filePath, string currentUser)
         {
@@ -135,7 +148,7 @@ namespace AccountManager
 
         }
 
-        public static void Deposit(Dictionary<string, UserAccount> accounts, string currentUser) 
+        public static void Deposit(Dictionary<string, UserAccount> accounts, string currentUser)
         {
             Console.Clear();
             Console.WriteLine($"Welcome {currentUser}");
@@ -149,12 +162,12 @@ namespace AccountManager
                 {
                     Console.WriteLine("WARNING! CANNOT BE A NEGATIVE NUMBER");
                 }
-                if(depositAmount > 0)
+                if (depositAmount > 0)
                 {
                     accounts[currentUser].Balance = accounts[currentUser].Balance + depositAmount;
                     Console.WriteLine($"You deposited ${depositAmount}");
-                    Console.WriteLine($"Your current balance: {accounts[currentUser].Balance}");
-                 
+                    Console.WriteLine($"Your current balance: ${accounts[currentUser].Balance}");
+
                 }
             }
             else
@@ -173,28 +186,47 @@ namespace AccountManager
             Console.WriteLine("------------------------");
             Console.WriteLine("");
 
-            Console.WriteLine($"Your current balance: {accounts[currentUser].Balance}");
+            Console.WriteLine($"Your current balance: ${accounts[currentUser].Balance}");
             Console.WriteLine("");
-            Console.WriteLine("How much would you like to widthdraw?: $");
+            Console.Write("How much would you like to widthdraw?: $");
             string widthdraw = Console.ReadLine();
 
-            if(int.TryParse(widthdraw, out int widthdrawAmount))
+            if (int.TryParse(widthdraw, out int widthdrawAmount))
             {
                 accounts[currentUser].Balance = accounts[currentUser].Balance - widthdrawAmount;
                 Console.WriteLine($"You widthdrawed ${widthdrawAmount}");
-                Console.WriteLine($"Your current balance: {accounts[currentUser].Balance}");
+                Console.WriteLine($"Your current balance: ${accounts[currentUser].Balance}");
             }
             else
             {
                 Console.WriteLine("Please enter a valid number");
-             
+
             }
 
 
         }
-        public static void CloseAccount(Dictionary<string, UserAccount> accounts, string filePath) 
-        { 
+        public static void CloseAccount(Dictionary<string, UserAccount> accounts, string filePath, string currentUser)
+        {
+            Console.Clear();
+            Console.Write("Would you like to close Account? (y/n): ");
+            string close = Console.ReadLine()?.ToUpper().Trim();
 
+            if (string.IsNullOrWhiteSpace(close))
+            {
+                Console.WriteLine("Please enter a valid option... Cannot be empty");
+                return;
+            }
+
+            if (close == "Y")
+            {
+                accounts[currentUser].IsActive = false;
+                Console.WriteLine($"You have successfully closed {currentUser} account");
+                StorageService.SaveUserAccount(accounts, filePath);
+            }
+            else
+            {
+                return;
+            }
         }
     }
 }

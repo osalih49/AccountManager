@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace AccountManager
 {
@@ -16,6 +17,7 @@ namespace AccountManager
 
             while (true)
             {
+                Console.Clear();
                 Console.WriteLine(" == Welcome to the Account Manager == ");
                 Console.WriteLine(" *Please choose from the options below* ");
                 Console.WriteLine("-----------------------------------------");
@@ -43,7 +45,9 @@ namespace AccountManager
                     }
                     else
                     {
-                        Console.WriteLine("Log-in Failed");
+                        Console.WriteLine("Log-in Failed...");
+                        Thread.Sleep(2000);
+                        Console.Clear();
                     }
                 }
                 else if (choice == "3")
@@ -123,7 +127,7 @@ namespace AccountManager
                 else if (choice == "4")
                 {
                     Console.Clear();
-                    AccountService.CloseAccount(accounts, currentUser);
+                    AccountService.CloseAccount(accounts, filePath, currentUser);
                 }
                 else if (choice == "5")
                 {
