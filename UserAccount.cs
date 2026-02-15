@@ -10,7 +10,7 @@ namespace AccountManager
     {
         public string Username { get; set; }
         public string Password { get; set; }
-        public double Balance { get; set; }
+        public decimal Balance { get; set; }
         public bool IsActive { get; set; }
 
     }

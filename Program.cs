@@ -10,7 +10,7 @@ namespace AccountManager
         {
             //test
             string filePath = "accounts.json";
-            Dictionary<string, UserAccount> accounts = StorageService.Accounts(filePath);
+            Dictionary<string, UserAccount> accounts = StorageService.LoadAccounts(filePath);
 
             string currentUser = null;
             Console.Clear();
@@ -46,8 +46,12 @@ namespace AccountManager
                     else
                     {
                         Console.WriteLine("Log-in Failed...");
-                        Thread.Sleep(2000);
+                        Console.WriteLine("Press Enter to continue...");
+                        Console.ReadLine();
                         Console.Clear();
+                        Console.WriteLine("Exiting...");
+                        Thread.Sleep(2000);
+                       
                     }
                 }
                 else if (choice == "3")
@@ -60,7 +64,7 @@ namespace AccountManager
 
            
         }
-        static string  LoggedInMenu(Dictionary<string, UserAccount> accounts, string filePath, string currentUser)
+        static void LoggedInMenu(Dictionary<string, UserAccount> accounts, string filePath, string currentUser)
         {
             Console.Clear();
             while (true)
@@ -83,66 +87,68 @@ namespace AccountManager
                 string choice = Console.ReadLine();
                 if (choice == "1")
                 {
-                    Console.Clear();
                     AccountService.ViewBalance(accounts, filePath, currentUser);
                     Console.WriteLine("");
-                    Console.WriteLine("Press 'B' to go back");
-                    string backChoice = Console.ReadLine()?.Trim().ToUpper(); ;
-
-                    if (backChoice == "B")
-                    {
-                        Console.Clear();
-                        continue;
-                    }
-                   
+                    Console.WriteLine("Press Enter to return to menu...");
+                    Console.ReadLine();
+                    Console.Clear();
+                    Console.WriteLine("Returning to menu...");
+                    Thread.Sleep(2000);
+                    Console.Clear();
                 }
                 else if (choice == "2")
                 {
-                    Console.Clear();
+                
                     AccountService.Deposit(accounts, currentUser);
+                    StorageService.SaveAccounts(accounts, filePath);
                     Console.WriteLine("");
-                    Console.WriteLine("Press 'B' to go back");
-                    string backChoice = Console.ReadLine()?.Trim()?.ToUpper();
+                    Console.WriteLine("Press Enter to return to menu...");
+                    Console.ReadLine();
+                    Console.Clear();
+                    Console.WriteLine("Returning to menu...");
+                    Thread.Sleep(2000);
 
-                    if (backChoice == "B")
-                    {
-                        Console.Clear();
-                        continue;
-                    }
                 }
                 else if (choice == "3")
                 {
-                    Console.Clear();
-                    AccountService.WidthDraw(accounts, currentUser);
+            
+                    AccountService.Withdraw(accounts, currentUser);
+                    StorageService.SaveAccounts(accounts, filePath);
                     Console.WriteLine("");
-                    Console.WriteLine("Press 'B' to go back");
-                    string backChoice = Console.ReadLine()?.Trim()?.ToUpper();
-
-                    if (backChoice == "B")
-                    {
-                        Console.Clear();
-                        continue;
-                    }
+                    Console.WriteLine("Press Enter to return to menu...");
+                    Console.ReadLine();
+                    Console.Clear();
+                    Console.WriteLine("Returning to menu...");
+                    Thread.Sleep(2000);
                 }
                 else if (choice == "4")
                 {
-                    Console.Clear();
+                 
                     AccountService.CloseAccount(accounts, filePath, currentUser);
+                    StorageService.SaveAccounts(accounts, filePath);
+                    Console.WriteLine("");
+                    Console.WriteLine("Press Enter to return to menu...");
+                    Console.ReadLine();
+                    Console.Clear();
+                    Console.WriteLine("Returning to menu...");
+                    Thread.Sleep(2000);
+
                 }
                 else if (choice == "5")
                 {
-                    Console.Clear();
+                   
                     Console.WriteLine($"Thank you for visiting {currentUser} have an amazing day!");
                     break;
                 }
                 else if (choice == "6")
                 {
-                    Console.Clear();
+                 
                     Environment.Exit(0);
                 }
             }
 
-            return currentUser;
+          
+       
         }
 
         }

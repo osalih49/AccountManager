@@ -67,11 +67,25 @@ namespace AccountManager
                     Thread.Sleep(2000);
                     confirmAttempts++;
                 }
-
             }
 
-            accounts[userName] = new UserAccount { Username = userName, Password = password, Balance = 0, IsActive = true };
-            StorageService.SaveUserAccount(accounts, filePath);
+         
+            if (confirmAttempts == 3)
+            {
+                Console.WriteLine("Too many failed attempts. Account not created.");
+                Thread.Sleep(2000);
+                return;
+            }
+
+            accounts[userName] = new UserAccount
+            {
+                Username = userName,
+                Password = password,
+                Balance = 0,
+                IsActive = true
+            };
+
+            StorageService.SaveAccounts(accounts, filePath);
             Console.WriteLine("Account successfully created!");
             Thread.Sleep(2000);
             Console.Clear();
@@ -144,7 +158,6 @@ namespace AccountManager
             Console.WriteLine($"Welcome {currentUser}");
             Console.WriteLine("-------------------------");
             Console.WriteLine($"Your Current Balance = ${currentBalance}");
-            StorageService.SaveUserAccount(accounts, filePath);
 
         }
 
@@ -154,11 +167,11 @@ namespace AccountManager
             Console.WriteLine($"Welcome {currentUser}");
             Console.WriteLine("-------------------------");
             Console.WriteLine("== How much would you like to deposit? ==");
-            Console.Write("Depoit: $");
+            Console.Write("Deposit: $");
             string deposit = Console.ReadLine();
             if (int.TryParse(deposit, out int depositAmount))
             {
-                if (depositAmount < 9)
+                if (depositAmount <= 9)
                 {
                     Console.WriteLine("WARNING! CANNOT BE A NEGATIVE NUMBER");
                 }
@@ -178,7 +191,7 @@ namespace AccountManager
 
         }
 
-        public static void WidthDraw(Dictionary<string, UserAccount> accounts, string currentUser)
+        public static void Withdraw(Dictionary<string, UserAccount> accounts, string currentUser)
         {
             Console.Clear();
             var currentBalance = accounts[currentUser].Balance;
@@ -188,13 +201,24 @@ namespace AccountManager
 
             Console.WriteLine($"Your current balance: ${accounts[currentUser].Balance}");
             Console.WriteLine("");
-            Console.Write("How much would you like to widthdraw?: $");
+            Console.Write("How much would you like to Withdraw?: $");
             string widthdraw = Console.ReadLine();
 
             if (int.TryParse(widthdraw, out int widthdrawAmount))
             {
+                if(widthdrawAmount <= 0)
+                {
+                    Console.WriteLine("You cannot Withdraw anymore funds");
+                    return;
+                }
+                if(widthdrawAmount > currentBalance)
+                {
+                    Console.WriteLine("Insuffienct Funds!");
+                    return ;    
+                }
+
                 accounts[currentUser].Balance = accounts[currentUser].Balance - widthdrawAmount;
-                Console.WriteLine($"You widthdrawed ${widthdrawAmount}");
+                Console.WriteLine($"You Withdrawed ${widthdrawAmount}");
                 Console.WriteLine($"Your current balance: ${accounts[currentUser].Balance}");
             }
             else
@@ -221,7 +245,8 @@ namespace AccountManager
             {
                 accounts[currentUser].IsActive = false;
                 Console.WriteLine($"You have successfully closed {currentUser} account");
-                StorageService.SaveUserAccount(accounts, filePath);
+                Console.Clear();
+                StorageService.SaveAccounts(accounts, filePath);
             }
             else
             {

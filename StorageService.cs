@@ -7,7 +7,7 @@ namespace AccountManager
 {
     public class StorageService
     {
-        public static Dictionary<string, UserAccount> Accounts(string filePath)
+        public static Dictionary<string, UserAccount> LoadAccounts(string filePath)
         {
             if (!File.Exists(filePath)) return new Dictionary<string, UserAccount>();
 
@@ -16,7 +16,7 @@ namespace AccountManager
 
             return userAccounts ?? new Dictionary<string, UserAccount>();
         }
-        public static void SaveUserAccount(Dictionary<string, UserAccount> Accounts, string filePath)
+        public static void SaveAccounts(Dictionary<string, UserAccount> Accounts, string filePath)
         {
             var option = new JsonSerializerOptions { WriteIndented = true };
             string json = JsonSerializer.Serialize(Accounts, option);
