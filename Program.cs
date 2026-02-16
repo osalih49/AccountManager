@@ -24,7 +24,8 @@ namespace AccountManager
                 Console.WriteLine("");
                 Console.WriteLine("1) Create Account ");
                 Console.WriteLine("2) Login");
-                Console.WriteLine("3) Exit");
+                Console.WriteLine("3) Admin");
+                Console.WriteLine("4) Exit");
                 Console.WriteLine("");
                 Console.WriteLine("----------------------------------------");
                 Console.WriteLine("");
@@ -53,8 +54,27 @@ namespace AccountManager
                         Thread.Sleep(2000);
                        
                     }
+                   
                 }
                 else if (choice == "3")
+                {
+                    var currentAdminAccount = AccountService.AdminAccount(accounts);
+                    if(currentAdminAccount != null)
+                    {
+                        AdminMenu(accounts, filePath, currentAdminAccount.Username);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Log-in Failed...");
+                        Console.WriteLine("Press Enter to continue...");
+                        Console.ReadLine();
+                        Console.Clear();
+                        Console.WriteLine("Exiting...");
+                        Thread.Sleep(2000);
+
+                    }
+                }
+                else if (choice == "4")
                 {
                     Console.WriteLine("Good-Bye, thank you for visiting our Account Management System");
                     break;
@@ -165,7 +185,54 @@ namespace AccountManager
        
         }
 
+        static void AdminMenu(Dictionary<string, UserAccount> accounts, string filePath, string adminUser)
+        {
+
+            while (true)
+            {
+                Console.WriteLine($" == Welcome, {adminUser} == ");
+                Console.WriteLine("\n*MUST BE ADMIN*");
+                Console.WriteLine("");
+                Console.WriteLine("--------------------------------");
+                Console.WriteLine("What would you like to do today?");
+                Console.WriteLine("1) View All Accounts");
+                Console.WriteLine("2) View only Active Accounts");
+                Console.WriteLine("3) Search by Usernames");
+                Console.WriteLine("4) Back to Main-Menu");
+                Console.WriteLine("5) Exit");
+                Console.WriteLine("");
+                Console.WriteLine("Choice: ");
+                string choice = Console.ReadLine();
+
+                if (choice == "1")
+                {
+                    //AccountService.ViewAllAccounts(accounts, filePath);
+                }
+                else if (choice == "2")
+                {
+                   // AccountService.ViewActiveAccounts(accounts, filePath);
+                }
+                else if (choice == "3")
+                {
+                   // AccountService.SearchUser(accounts, filePath);
+                }
+                else if (choice == "4")
+                {
+                    Console.WriteLine($"Thank you for visiting {adminUser} have an amazing day!");
+                    break;
+                }
+
+                else
+                {
+                    Environment.Exit(0);
+                }
+            }
+
         }
+
+    }
+
+     
     }
 
 

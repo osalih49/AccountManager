@@ -69,7 +69,7 @@ namespace AccountManager
                 }
             }
 
-         
+
             if (confirmAttempts == 3)
             {
                 Console.WriteLine("Too many failed attempts. Account not created.");
@@ -148,7 +148,7 @@ namespace AccountManager
             Console.Clear();
             return accounts[userName];
 
-          
+
 
         }
         public static void ViewBalance(Dictionary<string, UserAccount> accounts, string filePath, string currentUser)
@@ -207,21 +207,21 @@ namespace AccountManager
 
             if (int.TryParse(widthdraw, out int widthdrawAmount))
             {
-                if(widthdrawAmount <= 0)
+                if (widthdrawAmount <= 0)
                 {
                     Console.WriteLine("You cannot Withdraw anymore funds");
                     return;
                 }
-                if(widthdrawAmount > currentBalance)
+                if (widthdrawAmount > currentBalance)
                 {
                     Console.WriteLine("Insuffienct Funds!");
-                    return ;    
+                    return;
                 }
 
                 accounts[currentUser].Balance = accounts[currentUser].Balance - widthdrawAmount;
                 Console.WriteLine($"You Withdrawed ${widthdrawAmount}");
                 Console.WriteLine($"Your current balance: ${accounts[currentUser].Balance}");
-                accounts[currentUser].Transactions.Add($"Withdraw: ${widthdrawAmount}");
+                accounts[currentUser].Transactions.Add($"Withdraw: ${widthdrawAmount} | {DateTime.Now}");
             }
             else
             {
@@ -260,12 +260,12 @@ namespace AccountManager
         {
             var tx = accounts[currentUser].Transactions;
 
-            if(tx.Count == 0)
+            if (tx.Count == 0)
             {
                 Console.WriteLine("No Transaction yet");
             }
 
-           else
+            else
             {
                 for (int i = 0; i < tx.Count; i++)
                 {
@@ -273,5 +273,53 @@ namespace AccountManager
                 }
             }
         }
+
+        public static UserAccount AdminAccount(Dictionary<string, UserAccount> accounts)
+        {
+            Console.WriteLine("Welcome, Please sign-in");
+            Console.WriteLine("\n *MUST BE ADMIN* ");
+            Console.WriteLine("");
+            Console.WriteLine("---------------------");
+            Console.WriteLine("");
+            Console.Write("Username: ");
+            string admin = Console.ReadLine();
+
+            if (string.IsNullOrEmpty(admin))
+            {
+                Console.WriteLine("Username cannot be empty!");
+                return null;
+            }
+
+            if (!accounts.ContainsKey(admin))
+            {
+                Console.WriteLine("User does not exist.");
+                return null;
+            }
+
+            Console.Write("Password: ");
+            string password = Console.ReadLine();
+
+            if (string.IsNullOrEmpty(password))
+            {
+                Console.WriteLine("Password cannot be empty");
+                return null;
+            }
+
+            if (accounts[admin].Password == password && accounts[admin].AdminUser == true)
+            {
+                Console.WriteLine("Logged in Successfully");
+                Console.Clear();
+                Console.WriteLine("Loading...");
+                Thread.Sleep(2000);
+                Console.Clear();
+                return accounts[admin];
+            }
+            else
+            {
+                Console.WriteLine("You must be an admin to access!");
+                return null;
+            }
+               
+        }
     }
-}                                                                                                                   
+}

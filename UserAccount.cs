@@ -9,6 +9,8 @@ namespace AccountManager
     public class UserAccount
     {
         public string Username { get; set; }
+
+        public bool AdminUser { get; set; } = false;
         public string Password { get; set; }
         public decimal Balance { get; set; }
         public bool IsActive { get; set; }
