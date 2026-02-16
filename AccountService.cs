@@ -180,6 +180,7 @@ namespace AccountManager
                     accounts[currentUser].Balance = accounts[currentUser].Balance + depositAmount;
                     Console.WriteLine($"You deposited ${depositAmount}");
                     Console.WriteLine($"Your current balance: ${accounts[currentUser].Balance}");
+                    accounts[currentUser].Transactions.Add($"Deposit: ${depositAmount} | {DateTime.Now}");
 
                 }
             }
@@ -220,6 +221,7 @@ namespace AccountManager
                 accounts[currentUser].Balance = accounts[currentUser].Balance - widthdrawAmount;
                 Console.WriteLine($"You Withdrawed ${widthdrawAmount}");
                 Console.WriteLine($"Your current balance: ${accounts[currentUser].Balance}");
+                accounts[currentUser].Transactions.Add($"Withdraw: ${widthdrawAmount}");
             }
             else
             {
@@ -253,5 +255,23 @@ namespace AccountManager
                 return;
             }
         }
+
+        public static void ViewTransaction(Dictionary<string, UserAccount> accounts, string currentUser)
+        {
+            var tx = accounts[currentUser].Transactions;
+
+            if(tx.Count == 0)
+            {
+                Console.WriteLine("No Transaction yet");
+            }
+
+           else
+            {
+                for (int i = 0; i < tx.Count; i++)
+                {
+                    Console.WriteLine($"{i + 1}) {tx[i]}");
+                }
+            }
+        }
     }
-}
+}                                                                                                                   

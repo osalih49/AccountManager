@@ -13,5 +13,7 @@ namespace AccountManager
         public decimal Balance { get; set; }
         public bool IsActive { get; set; }
 
+        public List<string> Transactions { get; set; } = new List<string>();
+
     }
 }

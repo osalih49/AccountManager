@@ -78,9 +78,10 @@ namespace AccountManager
                 Console.WriteLine("1) View Balance");
                 Console.WriteLine("2) Deposit");
                 Console.WriteLine("3) Widthdraw");
-                Console.WriteLine("4) Close your Account");
-                Console.WriteLine("5) Logout");
-                Console.WriteLine("6) Exit");
+                Console.WriteLine("4) View Transactions");
+                Console.WriteLine("5) Close your Account");
+                Console.WriteLine("6) Logout");
+                Console.WriteLine("7) Exit");
                 Console.WriteLine("");
                 Console.WriteLine("----------------------------------------");
 
@@ -109,6 +110,7 @@ namespace AccountManager
                     Thread.Sleep(2000);
 
                 }
+                
                 else if (choice == "3")
                 {
             
@@ -123,6 +125,18 @@ namespace AccountManager
                 }
                 else if (choice == "4")
                 {
+
+                    AccountService.ViewTransaction(accounts, currentUser);
+                    StorageService.SaveAccounts(accounts, filePath);
+                    Console.WriteLine("");
+                    Console.WriteLine("Press Enter to return to menu...");
+                    Console.ReadLine();
+                    Console.Clear();
+                    Console.WriteLine("Returning to menu...");
+                    Thread.Sleep(2000);
+                }
+                else if (choice == "5")
+                {
                  
                     AccountService.CloseAccount(accounts, filePath, currentUser);
                     StorageService.SaveAccounts(accounts, filePath);
@@ -134,13 +148,13 @@ namespace AccountManager
                     Thread.Sleep(2000);
 
                 }
-                else if (choice == "5")
+                else if (choice == "6")
                 {
                    
                     Console.WriteLine($"Thank you for visiting {currentUser} have an amazing day!");
                     break;
                 }
-                else if (choice == "6")
+                else if (choice == "7")
                 {
                  
                     Environment.Exit(0);
