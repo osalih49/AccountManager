@@ -187,42 +187,76 @@ namespace AccountManager
 
         static void AdminMenu(Dictionary<string, UserAccount> accounts, string filePath, string adminUser)
         {
-
+            Console.Clear();
             while (true)
             {
+             
                 Console.WriteLine($" == Welcome, {adminUser} == ");
-                Console.WriteLine("\n*MUST BE ADMIN*");
                 Console.WriteLine("");
+                Console.BackgroundColor = ConsoleColor.DarkRed;
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(" ADMIN DASHBOARD ");
+                Console.ResetColor();
+
                 Console.WriteLine("--------------------------------");
                 Console.WriteLine("What would you like to do today?");
                 Console.WriteLine("1) View All Accounts");
                 Console.WriteLine("2) View only Active Accounts");
-                Console.WriteLine("3) Search by Usernames");
-                Console.WriteLine("4) Back to Main-Menu");
-                Console.WriteLine("5) Exit");
+                Console.WriteLine("3) View only Disabled Accounts");
+                Console.WriteLine("4) Search by Usernames");
+                Console.WriteLine("5) Back to Main-Menu");
+                Console.WriteLine("6) Exit");
                 Console.WriteLine("");
-                Console.WriteLine("Choice: ");
+                Console.Write("Choice: ");
                 string choice = Console.ReadLine();
 
                 if (choice == "1")
                 {
-                    //AccountService.ViewAllAccounts(accounts, filePath);
+                    AccountService.ViewAllAccounts(accounts);
+                    Console.WriteLine("");
+                    Console.WriteLine("Press Enter to return to menu...");
+                    Console.ReadLine();
+                    Console.Clear();
+                    Console.WriteLine("Returning to menu...");
+                    Thread.Sleep(2000);
                 }
                 else if (choice == "2")
                 {
-                   // AccountService.ViewActiveAccounts(accounts, filePath);
+                   AccountService.ViewActiveAccounts(accounts);
+                    Console.WriteLine("");
+                    Console.WriteLine("Press Enter to return to menu...");
+                    Console.ReadLine();
+                    Console.Clear();
+                    Console.WriteLine("Returning to menu...");
+                    Thread.Sleep(2000);
                 }
                 else if (choice == "3")
                 {
-                   // AccountService.SearchUser(accounts, filePath);
+                   AccountService.ViewDisabledAccounts(accounts);
+                    Console.WriteLine("");
+                    Console.WriteLine("Press Enter to return to menu...");
+                    Console.ReadLine();
+                    Console.Clear();
+                    Console.WriteLine("Returning to menu...");
+                    Thread.Sleep(2000);
                 }
-                else if (choice == "4")
+                else if(choice == "4")
+                {
+                 AccountService.SearchAccount(accounts);
+                    Console.WriteLine("");
+                    Console.WriteLine("Press Enter to return to menu...");
+                    Console.ReadLine();
+                    Console.Clear();
+                    Console.WriteLine("Returning to menu...");
+                    Thread.Sleep(2000);
+                }
+                else if (choice == "5")
                 {
                     Console.WriteLine($"Thank you for visiting {adminUser} have an amazing day!");
                     break;
                 }
 
-                else
+                else if (choice == "6")
                 {
                     Environment.Exit(0);
                 }

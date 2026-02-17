@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading;
 
@@ -219,7 +220,7 @@ namespace AccountManager
                 }
 
                 accounts[currentUser].Balance = accounts[currentUser].Balance - widthdrawAmount;
-                Console.WriteLine($"You Withdrawed ${widthdrawAmount}");
+                Console.WriteLine($"You Withdrawed $-{widthdrawAmount}");
                 Console.WriteLine($"Your current balance: ${accounts[currentUser].Balance}");
                 accounts[currentUser].Transactions.Add($"Withdraw: ${widthdrawAmount} | {DateTime.Now}");
             }
@@ -276,11 +277,19 @@ namespace AccountManager
 
         public static UserAccount AdminAccount(Dictionary<string, UserAccount> accounts)
         {
+            Console.Clear();
             Console.WriteLine("Welcome, Please sign-in");
-            Console.WriteLine("\n *MUST BE ADMIN* ");
-            Console.WriteLine("");
+            Console.WriteLine();
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("****************");
+            Console.WriteLine("* MUST BE ADMIN *");
+            Console.WriteLine("****************");
+            Console.ResetColor();
+
+            Console.WriteLine();
             Console.WriteLine("---------------------");
-            Console.WriteLine("");
+
             Console.Write("Username: ");
             string admin = Console.ReadLine();
 
@@ -319,7 +328,74 @@ namespace AccountManager
                 Console.WriteLine("You must be an admin to access!");
                 return null;
             }
-               
+
+        }
+        public static void ViewAllAccounts(Dictionary<string, UserAccount> accounts)
+        {
+            Console.WriteLine($"{"Username",-15} | {"Balance",10} | {"Active",-6}");
+            Console.WriteLine(new string('-', 40));
+
+            foreach (var account in accounts)
+            {
+                Console.WriteLine(
+                    $"{account.Key,-15} | ${account.Value.Balance,9} | {account.Value.IsActive,-6}"
+                );
+            }
+
+
+        }
+        public static void ViewActiveAccounts(Dictionary<string, UserAccount> accounts)
+        {
+            Console.WriteLine($"{"Username",-15} | {"Active",-6}");
+            Console.WriteLine(new string('-', 40));
+            foreach (var active in accounts) 
+            {
+                if(active.Value.IsActive)
+                {
+                    Console.WriteLine($"{active.Key, -15} | {active.Value.IsActive}");
+                }
+            }
+        }
+        public static void ViewDisabledAccounts(Dictionary<string, UserAccount> accounts)
+        {
+            Console.WriteLine($"{"Username",-15} | {"Disabled",-6}");
+            Console.WriteLine(new string('-', 40));
+
+            foreach(var disabled in accounts)
+            {
+                if(!disabled.Value.IsActive)
+                {
+                    Console.WriteLine($"{disabled.Key,-15} | {disabled.Value.IsActive}");
+                }
+            }
+        }
+
+        public static void SearchAccount(Dictionary<string, UserAccount> accounts)
+        {
+            Console.WriteLine("Search Account Below");
+            Console.WriteLine("--------------------");
+            Console.WriteLine("");
+            Console.Write("Username: ");
+            string username = Console.ReadLine();
+
+            if (string.IsNullOrEmpty(username))
+            {
+                Console.WriteLine("Username cannot be empty");
+                return;
+            }
+
+            if (!accounts.ContainsKey(username))
+            {
+                Console.WriteLine("Username does not exist.");
+                return;
+            }
+
+            var account = accounts[username];
+
+            Console.WriteLine();
+            Console.WriteLine($"{"Username",-15} | {"Balance",10} | {"Active",-6}");
+            Console.WriteLine(new string('-', 40));
+            Console.WriteLine($"{account.Username,-15} | ${account.Balance,9} | {account.IsActive,-6}");
         }
     }
 }
